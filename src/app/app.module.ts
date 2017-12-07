@@ -13,6 +13,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { HttpProvider } from '../providers/http/http';
 import {HttpModule} from "@angular/http";
+import {AdMobPro } from '@ionic-native/admob-pro';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -34,7 +36,7 @@ import {HttpModule} from "@angular/http";
     TabsPage, TestPage
   ],
   providers: [
-    StatusBar,
+    StatusBar,AdMobPro,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     HttpProvider

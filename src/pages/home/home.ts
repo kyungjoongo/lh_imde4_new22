@@ -25,6 +25,10 @@ export class HomePage {
                 public loadingCtrl: LoadingController,
                 public toastcontroller: ToastController,
                 public httpprovider: HttpProvider) {
+
+
+
+        this.presentToast("시,구를 선택하세요..", 2500, 'toast001');
     }
 
 
@@ -50,7 +54,20 @@ export class HomePage {
                         this.resultList = responseListresult.resultList;
 
 
-                        loader.dismissAll();
+                        //loader.dismissAll();
+
+                        this.page++;
+
+                        this.httpprovider.getAll(this.page, this.ssi, this.selectedGoo).subscribe(responseListresult => {
+
+                            var fetchedList = [];
+                            fetchedList = responseListresult.resultList;
+                            for (var i = 0; i < fetchedList.length; i++) {
+                                this.resultList.push(fetchedList[i]);
+                            }
+
+                            loader.dismissAll();
+                        })
 
                     })
 
@@ -71,12 +88,25 @@ export class HomePage {
         this.createLoading('리스트를 가지고 오는중..');
         this.loader.present();
 
-        this.page=1;
+        this.page = 1;
 
         this.httpprovider.getAll(this.page, this.ssi, this.selectedGoo).subscribe(responseListresult => {
             console.log(responseListresult.resultList);
             this.resultList = responseListresult.resultList;
-            this.loader.dismissAll();
+            //this.loader.dismissAll();
+
+            this.page++;
+
+            this.httpprovider.getAll(this.page, this.ssi, this.selectedGoo).subscribe(responseListresult => {
+
+                var fetchedList = [];
+                fetchedList = responseListresult.resultList;
+                for (var i = 0; i < fetchedList.length; i++) {
+                    this.resultList.push(fetchedList[i]);
+                }
+
+                this.loader.dismissAll();
+            })
         })
     }
 
@@ -97,12 +127,37 @@ export class HomePage {
 
             if (fetchedList.length == 0) {
 
-                this.presentToast('더이상 데이타가 없습니다')
+                this.presentToast('더이상 데이타가 없습니다', 1000, '')
             } else {
 
                 for (var i = 0; i < fetchedList.length; i++) {
                     this.resultList.push(fetchedList[i]);
                 }
+
+                this.page++;
+
+
+                this.httpprovider.getAll(this.page, this.ssi, this.selectedGoo).subscribe(responseListresult => {
+
+                    var fetchedList = [];
+                    fetchedList = responseListresult.resultList;
+
+                    if (fetchedList.length == 0) {
+
+                        this.presentToast('더이상 데이타가 없습니다', 1000, '')
+                    } else {
+
+                        for (var i = 0; i < fetchedList.length; i++) {
+                            this.resultList.push(fetchedList[i]);
+                        }
+
+
+                    }
+
+                    infiniteScroll.complete();
+
+
+                })
 
 
             }
@@ -116,11 +171,11 @@ export class HomePage {
     }
 
 
-    presentToast(message) {
+    presentToast(message, duration, cssClass) {
         let toast = this.toastcontroller.create({
             message: message,
-            duration: 1000,
-            cssClass: 'toast001'
+            duration: duration,
+            cssClass: cssClass
         });
         toast.present();
     }

@@ -5,6 +5,9 @@ import {SplashScreen} from '@ionic-native/splash-screen';
 
 import {TabsPage} from '../pages/tabs/tabs';
 import {AdMobPro} from "@ionic-native/admob-pro";
+import {ContactPage} from "../pages/contact/contact";
+import {TestPage} from "../pages/test/test";
+import {HomePage} from "../pages/home/home";
 
 
 @Component({
@@ -12,6 +15,8 @@ import {AdMobPro} from "@ionic-native/admob-pro";
 })
 export class MyApp {
     rootPage: any = TabsPage;
+
+    /*rootPage: any = TestPage;*/
 
     constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private admob: AdMobPro) {
 

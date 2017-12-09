@@ -13,15 +13,14 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class HttpProvider {
 
-    constructor(public http: Http) {
-        console.log('Hello HttpProvider Provider');
-    }
-
     url2 = "http://104.196.106.6:8080/";
     /*    url2 = "http://localhost:8080/";*/
 
     ulr____ = "http://35.194.71.159:8080/";
 
+    constructor(public http: Http) {
+        console.log('Hello HttpProvider Provider');
+    }
 
     getAll(pageIndex, srchbrtcCode, selectedGoo) {
 

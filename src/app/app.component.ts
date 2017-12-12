@@ -35,12 +35,11 @@ export class MyApp {
             this.admob.prepareInterstitial({
                 adId: admobid.interstitial,
                 isTesting: false
-                , autoShow: true
+                , autoShow: false
 
             })
 
-            // this.admob.showInterstitial();
-
+            this.admob.showInterstitial();
             this.admob.createBanner({
                 adId: admobid.banner,
                 isTesting: false,

@@ -26,8 +26,6 @@ export class HomePage {
                 public toastcontroller: ToastController,
                 public httpprovider: HttpProvider) {
 
-
-
         this.presentToast("시,구를 선택하세요..", 2500, 'toast001');
     }
 

@@ -14,7 +14,6 @@ import 'rxjs/add/operator/map';
 export class BoardProvider {
 
     constructor(public http: Http) {
-        console.log('Hello BoardProvider Provider');
     }
 
 

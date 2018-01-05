@@ -1,6 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {LoadingController, NavController, ToastController} from 'ionic-angular';
 import {HttpProvider} from "../../providers/http/http";
+import {Content} from "ionic-angular";
 
 @Component({
     selector: 'page-home',
@@ -14,6 +15,7 @@ export class HomePage {
     resultList = [];
     page = 1;
     loader: any;
+    @ViewChild(Content) content: Content;
 
     createLoading(text) {
         this.loader = this.loadingCtrl.create({
@@ -26,7 +28,12 @@ export class HomePage {
                 public toastcontroller: ToastController,
                 public httpprovider: HttpProvider) {
 
+
+    }
+
+    ionViewDidEnter(){
         this.presentToast("시,구를 선택하세요..", 2500, 'toast001');
+
     }
 
 
@@ -50,10 +57,6 @@ export class HomePage {
                     this.httpprovider.getAll(this.page, this.ssi, this.selectedGoo).subscribe(responseListresult => {
                         console.log(responseListresult.resultList);
                         this.resultList = responseListresult.resultList;
-
-
-                        //loader.dismissAll();
-
                         this.page++;
 
                         this.httpprovider.getAll(this.page, this.ssi, this.selectedGoo).subscribe(responseListresult => {
@@ -65,6 +68,8 @@ export class HomePage {
                             }
 
                             loader.dismissAll();
+
+                            this.scrollToTop();
                         })
 
                     })
@@ -104,8 +109,18 @@ export class HomePage {
                 }
 
                 this.loader.dismissAll();
+
+                /*let scrollContent: Content = document.getElementById("listScroll");
+                scrollContent.scrollToTop;*/
+                this.scrollToTop();
             })
         })
+    }
+
+
+
+    scrollToTop() {
+        this.content.scrollToTop();
     }
 
     openInAppBrowser(pblancId) {
@@ -173,7 +188,8 @@ export class HomePage {
         let toast = this.toastcontroller.create({
             message: message,
             duration: duration,
-            cssClass: cssClass
+            cssClass: cssClass,
+            position : 'bottom'
         });
         toast.present();
     }

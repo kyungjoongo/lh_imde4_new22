@@ -3,33 +3,33 @@ import {Injectable} from '@angular/core';
 import {Http} from "@angular/http";
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
+import {Observable} from "rxjs/Observable";
 
-/*
-  Generated class for the HttpProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class HttpProvider {
 
-    url2 = "http://104.196.106.6:8080/";
+    url2 = "http://35.189.188.152:8080/";
     /*    url2 = "http://localhost:8080/";*/
 
-    ulr____ = "http://35.194.71.159:8080/";
-
-    constructor(public http: Http) {
+    constructor(public http: Http, public httpClient: HttpClient) {
         console.log('Hello HttpProvider Provider');
     }
 
-    getAll(pageIndex, srchbrtcCode, selectedGoo) {
-
-        return this.http.post(this.url2 + "lh/lhListToJson?pageIndex=" + pageIndex + "&srchbrtcCode=" + srchbrtcCode
-            + "&srchsignguCode=" + selectedGoo, null).map(response => {
+    shUrl = 'http://kyungjoon.ipdisk.co.kr:5000/getRentalHouseList?gooCode=';
 
 
+    getShRentalList(pageIndex, srchbrtcCode = 11, gooCode) {
+
+        return this.http.get(this.shUrl + gooCode).map(response => {
             return response.json();
+
         })
+    }
+
+
+    getAll(pageIndex, srchbrtcCode, selectedGoo):Observable<any> {
+        return this.httpClient.post(this.url2 + "lh/lhListToJson?pageIndex=" + pageIndex + "&srchbrtcCode=" + srchbrtcCode
+            + "&srchsignguCode=" + selectedGoo, null);
     }
 
 

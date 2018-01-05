@@ -15,6 +15,8 @@ import {HttpProvider} from '../providers/http/http';
 import {HttpModule} from "@angular/http";
 import {AdMobPro} from '@ionic-native/admob-pro';
 import {BoardProvider} from '../providers/board/board';
+import {ShRentalPage} from "../pages/sh-rental/sh-rental";
+import { HttpClientModule} from "@angular/common/http";
 
 @NgModule({
     declarations: [
@@ -22,11 +24,11 @@ import {BoardProvider} from '../providers/board/board';
         AboutPage,
         ContactPage,
         HomePage,
-        TabsPage, TestPage
+        TabsPage, TestPage, ShRentalPage
     ],
     imports: [
         BrowserModule,
-        IonicModule.forRoot(MyApp), HttpModule
+        IonicModule.forRoot(MyApp), HttpModule, HttpClientModule
     ],
     bootstrap: [IonicApp],
     entryComponents: [
@@ -34,7 +36,7 @@ import {BoardProvider} from '../providers/board/board';
         AboutPage,
         ContactPage,
         HomePage,
-        TabsPage, TestPage
+        TabsPage, TestPage, ShRentalPage
     ],
     providers: [
         StatusBar, AdMobPro,
@@ -46,3 +48,5 @@ import {BoardProvider} from '../providers/board/board';
 })
 export class AppModule {
 }
+
+

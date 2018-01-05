@@ -42,11 +42,11 @@
     </ion-row>
 
 </ion-header>
-<ion-content>
+<ion-content id="listScroll">
 
     <div color="danger"  style="text-align: center; color: darkred" *ngIf="resultList.length == 0; else elseBlock">
         <br/>
-        데이타가 없습니다 ( 시와 구를 선택하세요!)
+        데이타가 없습니다 .
     </div>
     <ng-template #elseBlock>
 

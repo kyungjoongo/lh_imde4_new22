@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {Platform} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {AlertController, Nav, Platform} from 'ionic-angular';
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 
@@ -15,33 +15,77 @@ import {HomePage} from "../pages/home/home";
 })
 export class MyApp {
     rootPage: any = TabsPage;
+    @ViewChild(Nav) nav: Nav;
+    alert: any;
 
     /*rootPage: any = TestPage;*/
 
-    constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private admob: AdMobPro) {
+    constructor(public platform: Platform
+        , public statusBar: StatusBar
+        , public splashScreen: SplashScreen
+        , public alertCtrl: AlertController
+        , public admob: AdMobPro) {
+
+
         platform.ready().then(() => {
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
             statusBar.styleDefault();
             splashScreen.hide();
 
-            var admobid = {
+            let admobid = {
                 interstitial: 'ca-app-pub-6826082357124500/9307296734',
-                banner: 'ca-app-pub-6826082357124500/7593091515'
+                banner: 'ca-app-pub-6826082357124500/2589453216'
+
             };
             this.admob.prepareInterstitial({
                 adId: admobid.interstitial,
                 isTesting: false
                 , autoShow: true
 
+            })
+
+
+            platform.registerBackButtonAction(() => {
+
+                if (this.nav.canGoBack()) {
+                    this.nav.pop();
+                } else {
+                    if (this.alert) {
+                        this.alert.dismiss();
+                        this.alert = null;
+                    } else {
+                        this.showAlert();
+                    }
+                }
             });
 
-            this.admob.createBanner({
-                adId: admobid.banner,
-                isTesting: false,
-                autoShow: true,
-                position: this.admob.AD_POSITION.BOTTOM_CENTER
-            })
         });
+
+
+    }
+
+
+    showAlert() {
+        this.alert = this.alertCtrl.create({
+            title: 'Really?',
+            message: '진짜 나가시게요?',
+            buttons: [
+                {
+                    text: 'Cancel',
+                    role: 'cancel',
+                    handler: () => {
+                        this.alert = null;
+                    }
+                },
+                {
+                    text: 'Exit',
+                    handler: () => {
+                        this.platform.exitApp();
+                    }
+                }
+            ]
+        });
+        this.alert.present();
     }
 }

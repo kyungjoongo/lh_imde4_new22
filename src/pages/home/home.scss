@@ -1,7 +1,8 @@
 page-home {
 
     .header {
-        background-color: #488aff;
+        background-color: #3b5998;
+        color: white;
     }
 
     .selected {
@@ -12,4 +13,21 @@ page-home {
     /*.toast001 {
         background-color: #f53d3d !important;
     }*/
+
+    $loading-md-spinner-dots-color : red;
+
+
+    .gray001{
+        height: 36px;
+        width: 100%;
+        min-height: 36px;
+    }
+
+    .bottom001{
+        position: fixed;
+        bottom: 50px;
+    }
+
+
+
 }

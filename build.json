@@ -1,0 +1,18 @@
+{
+    "android": {
+        "debug": {
+            "keystore": "./../my-release-key.keystore",
+            "storePassword": "ka265877",
+            "alias": "alias_name",
+            "password" : "ka265877",
+            "keystoreType": ""
+        },
+        "release": {
+            "keystore": "./../my-release-key.keystore",
+            "storePassword": "ka265877",
+            "alias": "alias_name",
+            "password" : "ka265877",
+            "keystoreType": ""
+        }
+    }
+}

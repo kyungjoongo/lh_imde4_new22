@@ -1,0 +1,52 @@
+<ion-content class="home" #container>
+
+    <ion-fab>
+        <button (click)="clickedFab()" mini ion-fab class="fab001" color="facebook">
+            <ion-icon name="arrow-round-up"></ion-icon>
+        </button>
+    </ion-fab>
+
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="refresh"
+        ></ion-refresher-content>
+    </ion-refresher>
+
+
+    <div class="card001" *ngFor="let item of results; let i= index"
+         style="background: rgba(0,0,0,0);padding: 0px!important;">
+
+        <ion-row style="text-align: center; padding: 0px;">
+            <ion-col col-12 style="padding: 0px;">
+
+                <div class="image-list">
+                    <img class="image001" (click)="clickedItem(item.link)" [defaultImage]="placeholder"
+                         [lazyLoad]="imageResult[i].webformatURL"
+                    >
+
+                </div>
+
+                <div class="text001">
+                    <ion-row>
+                        <ion-col col-9="" style="font-size: 14pt;">
+                            <div [innerHTML]="item.title"></div>
+                        </ion-col>
+                        <ion-col col-3="" item-right style="font-size: 9pt;">
+                            {{item.pubDate | date:'yyyy-MM-dd'}}
+                        </ion-col>
+                    </ion-row>
+
+                </div>
+            </ion-col>
+        </ion-row>
+
+    </div>
+
+
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)" threshold="100px">
+        <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
+
+</ion-content>

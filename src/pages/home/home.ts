@@ -1,7 +1,10 @@
 import {Component, ViewChild} from '@angular/core';
-import {LoadingController, NavController, ToastController} from 'ionic-angular';
+import {LoadingController, NavController, Platform, ToastController} from 'ionic-angular';
 import {HttpProvider} from "../../providers/http/http";
 import {Content} from "ionic-angular";
+import {throttle} from 'lodash';
+import {InAppBrowser} from '@ionic-native/in-app-browser';
+import {AdMobPro} from "@ionic-native/admob-pro";
 
 @Component({
     selector: 'page-home',
@@ -15,34 +18,66 @@ export class HomePage {
     resultList = [];
     page = 1;
     loader: any;
+    isFirst : boolean = true;
     @ViewChild(Content) content: Content;
 
-    createLoading(text) {
-        this.loader = this.loadingCtrl.create({
-            content: text
-        });
-    }
 
     constructor(public navCtrl: NavController,
                 public loadingCtrl: LoadingController,
                 public toastcontroller: ToastController,
+                public platform: Platform,
+                public admob: AdMobPro,
+                private   iab: InAppBrowser,
                 public httpprovider: HttpProvider) {
+
+        this.scrollToTop = throttle(this.scrollToTop, 500, {leading: true, trailing: false})
+
+    }
+
+    createLoading(text) {
+        this.loader = this.loadingCtrl.create({
+            content: text,
+            spinner: 'dots',
+            enableBackdropDismiss: true
+        });
 
 
     }
 
-    ionViewDidEnter(){
-        this.presentToast("시,구를 선택하세요..", 2500, 'toast001');
 
+    /*  ionViewDidEnter() {
+          this.presentToast("시,구를 선택하세요..", 1000, 'toast001');
+
+      }*/
+
+    getAdMob(){
+        if (this.platform.is('cordova')) {
+
+            let admobid = {
+                interstitial: 'ca-app-pub-6826082357124500/9307296734',
+                banner: 'ca-app-pub-6826082357124500/2589453216'
+
+            };
+            this.admob.createBanner({
+                adId: admobid.banner,
+                isTesting: false,
+                autoShow: true,
+                position: this.admob.AD_POSITION.BOTTOM_CENTER
+            })
+
+        }
     }
 
 
     selectSi() {
-
-
         let loader = this.loadingCtrl.create({
-            content: 'Loading..'
+            content: '로딩중..'
         });
+
+        if ( this.isFirst ){
+            this.getAdMob();
+            this.isFirst = false;
+        }
 
         loader.present().then(() => {
 
@@ -50,8 +85,10 @@ export class HomePage {
                     this.gooList = response.result;
                     console.log(response.result);
 
-                    this.selectedGoo = '';
+                    this.selectedGoo = null
                     this.page = 1;
+
+
 
 
                     this.httpprovider.getAll(this.page, this.ssi, this.selectedGoo).subscribe(responseListresult => {
@@ -67,14 +104,20 @@ export class HomePage {
                                 this.resultList.push(fetchedList[i]);
                             }
 
-                            loader.dismissAll();
+
+                            loader.dismiss();
 
                             this.scrollToTop();
+
+
                         })
 
                     })
 
 
+                }, error2 => {
+
+                    alert(error2);
                 })
             }
         )
@@ -84,39 +127,40 @@ export class HomePage {
 
 
     selectGoo() {
-
-        /*alert(this.ssi);
-        alert(this.selectedGoo);*/
-
         this.createLoading('리스트를 가지고 오는중..');
-        this.loader.present();
-
-        this.page = 1;
-
-        this.httpprovider.getAll(this.page, this.ssi, this.selectedGoo).subscribe(responseListresult => {
-            console.log(responseListresult.resultList);
-            this.resultList = responseListresult.resultList;
-            //this.loader.dismissAll();
-
-            this.page++;
+        this.loader.present().then(() => {
+            this.page = 1;
 
             this.httpprovider.getAll(this.page, this.ssi, this.selectedGoo).subscribe(responseListresult => {
+                console.log(responseListresult.resultList);
+                this.resultList = responseListresult.resultList;
+                //this.loader.dismissAll();
 
-                var fetchedList = [];
-                fetchedList = responseListresult.resultList;
-                for (var i = 0; i < fetchedList.length; i++) {
-                    this.resultList.push(fetchedList[i]);
-                }
+                this.page++;
 
-                this.loader.dismissAll();
+                this.httpprovider.getAll(this.page, this.ssi, this.selectedGoo).subscribe(responseListresult => {
 
-                /*let scrollContent: Content = document.getElementById("listScroll");
-                scrollContent.scrollToTop;*/
-                this.scrollToTop();
+                    var fetchedList = [];
+                    fetchedList = responseListresult.resultList;
+                    for (var i = 0; i < fetchedList.length; i++) {
+                        this.resultList.push(fetchedList[i]);
+                    }
+
+
+                    this.loader.dismiss();
+
+                    this.scrollToTop();
+
+                    /*let scrollContent: Content = document.getElementById("listScroll");
+                    scrollContent.scrollToTop;*/
+
+                })
             })
-        })
-    }
 
+        });
+
+
+    }
 
 
     scrollToTop() {
@@ -125,7 +169,7 @@ export class HomePage {
 
     openInAppBrowser(pblancId) {
 
-        window.open('https://m.myhome.go.kr/hws/portal/sch/selectRsdtRcritNtcView.do#detailPage?pblancId=' + pblancId, '_selft');
+        this.iab.create('https://m.myhome.go.kr/hws/portal/sch/selectRsdtRcritNtcView.do#detailPage?pblancId=' + pblancId, '_blank', 'location=no,toolbar=yes');
     }
 
 
@@ -189,7 +233,7 @@ export class HomePage {
             message: message,
             duration: duration,
             cssClass: cssClass,
-            position : 'bottom'
+            position: 'bottom'
         });
         toast.present();
     }

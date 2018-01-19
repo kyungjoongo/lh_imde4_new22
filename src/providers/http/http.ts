@@ -8,6 +8,8 @@ import {Observable} from "rxjs/Observable";
 @Injectable()
 export class HttpProvider {
 
+
+    /*http://35.189.188.152:8080/lh/gettGooListToJson?srchbrtcCode=45*/
     url2 = "http://35.189.188.152:8080/";
     /*    url2 = "http://localhost:8080/";*/
 
@@ -16,6 +18,8 @@ export class HttpProvider {
     }
 
     shUrl = 'http://kyungjoon.ipdisk.co.kr:5000/getRentalHouseList?gooCode=';
+
+
 
 
     getShRentalList(pageIndex, srchbrtcCode = 11, gooCode) {
@@ -28,6 +32,9 @@ export class HttpProvider {
 
 
     getAll(pageIndex, srchbrtcCode, selectedGoo):Observable<any> {
+
+
+
         return this.httpClient.post(this.url2 + "lh/lhListToJson?pageIndex=" + pageIndex + "&srchbrtcCode=" + srchbrtcCode
             + "&srchsignguCode=" + selectedGoo, null);
     }

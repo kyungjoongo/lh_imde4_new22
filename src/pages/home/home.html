@@ -1,8 +1,7 @@
 <ion-header>
-    <ion-item>
-        <ion-label>시</ion-label>
-        <ion-select (ionChange)="selectSi()" [(ngModel)]="ssi" okText="Okay" cancelText="Dismiss" interface="popover">
-
+    <ion-item class="gray001">
+        <ion-label>지역(시) </ion-label>
+        <ion-select  (ionChange)="selectSi()" [(ngModel)]="ssi" okText="Okay" cancelText="Dismiss" interface="popover">
             <ion-option value="" selected>전체</ion-option>
             <ion-option value="11">서울특별시</ion-option>
             <ion-option value="26">부산광역시</ion-option>
@@ -22,8 +21,9 @@
             <ion-option value="48">경상남도</ion-option>
             <ion-option value="50">제주특별자치도</ion-option>
         </ion-select>
+
     </ion-item>
-    <ion-item>
+    <ion-item class="gray001">
         <ion-label> 상세지역(구)</ion-label>
         <ion-select [(ngModel)]="selectedGoo" (ionChange)="selectGoo()" okText="Okay" cancelText="Dismiss" interface="popover" placeholder="--------">
             <ion-option value="">전체</ion-option>
@@ -32,13 +32,12 @@
             </ion-option>
         </ion-select>
 
-
     </ion-item>
-    <ion-row>
-        <ion-col class="header" col-1="">#</ion-col>
-        <ion-col class="header" col-2="">지역</ion-col>
-        <ion-col class="header" col-7="">공고명</ion-col>
-        <ion-col class="header" col-2="">완료여부</ion-col>
+    <ion-row style="background: #3b5998!important;">
+        <ion-col class="header" col-1="" style="font-size: 8pt!important;">#</ion-col>
+        <ion-col class="header" col-2="" style="font-size: 8pt!important;">지역</ion-col>
+        <ion-col class="header" col-7="" style="font-size: 8pt!important;">공고명</ion-col>
+        <ion-col class="header" col-2="" style="font-size: 8pt!important;">완료여부</ion-col>
     </ion-row>
 
 </ion-header>
@@ -46,7 +45,7 @@
 
     <div color="danger"  style="text-align: center; color: darkred" *ngIf="resultList.length == 0; else elseBlock">
         <br/>
-        데이타가 없습니다 .
+       <p style="font-weight: bold">데이타가 없습니다 .</p>
     </div>
     <ng-template #elseBlock>
 
@@ -69,7 +68,7 @@
         </ion-row>
 
         <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
-            <ion-infinite-scroll-content></ion-infinite-scroll-content>
+            <ion-infinite-scroll-content loadingSpinner="dots" loadingText="로딩중.."></ion-infinite-scroll-content>
         </ion-infinite-scroll>
 
 
